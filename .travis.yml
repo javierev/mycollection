@@ -3,3 +3,15 @@ python:
     - '3.8'
 script:
     - python manage.py test --settings=mycollection.settings.testing
+addons:
+    apt:
+        packages:
+            - sshpass
+after_success:
+    - test $TRAVIS_BRANCH == "master" && mkdir build
+    - test $TRAVIS_BRANCH == "master" && cp * build
+    - test $TRAVIS_BRANCH == "master" && mv build mycollection
+    - test $TRAVIS_BRANCH == "master" && tar -cxf mycollection.tgz mycollection
+    - test $TRAVIS_BRANCH == "master" && export SSHPASS=$DEPLOY_PASS
+    - test $TRAVIS_BRANCH == "master" && sshpass -e scp mycollection.tgz $DEPLOY_USER@DEPLOY_HOST:$DEPLOY_PATH
+    - test $TRAVIS_BRANCH == "master" && sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_SCRIPT_PATH/deploy.sh
