@@ -8,6 +8,7 @@ addons:
         packages:
             - sshpass
 after_success:
+    - test $TRAVIS_BRANCH == "master" && echo 'master branch'
     - test $TRAVIS_BRANCH == "master" && mkdir build
     - test $TRAVIS_BRANCH == "master" && cp * build
     - test $TRAVIS_BRANCH == "master" && mv build mycollection
