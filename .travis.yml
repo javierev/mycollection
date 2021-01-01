@@ -2,4 +2,4 @@ language: python
 python:
     - '3.8'
 script:
-    - python manage.py test --settings=mycollection.settings.test
+    - python manage.py test --settings=mycollection.settings.testing
