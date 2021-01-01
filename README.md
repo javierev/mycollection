@@ -1,0 +1,2 @@
+# mycollection
+Game collection database
