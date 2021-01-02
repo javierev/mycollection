@@ -9,7 +9,9 @@ addons:
             - sshpass
 after_success:
     - test $TRAVIS_BRANCH == "main" && mkdir build
-    - test $TRAVIS_BRANCH == "main" && cp * build && cp -r mycollection build && cp -r collection build
+    - test $TRAVIS_BRANCH == "main" && cp * build 
+    - test $TRAVIS_BRANCH == "main" && cp -r mycollection build 
+    - test $TRAVIS_BRANCH == "main" && cp -r collection build
     - test $TRAVIS_BRANCH == "main" && tar -czf mycollection.tgz build
     - test $TRAVIS_BRANCH == "main" && export SSHPASS=$DEPLOY_PASS
     - test $TRAVIS_BRANCH == "main" && sshpass -e scp -o stricthostkeychecking=no mycollection.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
