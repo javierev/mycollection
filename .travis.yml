@@ -14,5 +14,5 @@ after_success:
     - test $TRAVIS_BRANCH == "main" && tar -czf mycollection.tgz build
     - ls -lha
     - test $TRAVIS_BRANCH == "main" && export SSHPASS=$DEPLOY_PASS
-    - test $TRAVIS_BRANCH == "main" && sshpass -e scp mycollection.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
-    - test $TRAVIS_BRANCH == "main" && sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_SCRIPT_PATH/deploy.sh
+    - test $TRAVIS_BRANCH == "main" && sshpass -e scp -o stricthostkeychecking=no mycollection.tgz $DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH
+    - test $TRAVIS_BRANCH == "main" && sshpass -e ssh -o stricthostkeychecking=no $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_SCRIPT_PATH/deploy.sh
