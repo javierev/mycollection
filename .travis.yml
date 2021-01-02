@@ -12,7 +12,7 @@ after_success:
     - test $TRAVIS_BRANCH == "main" && mkdir build
     - test $TRAVIS_BRANCH == "main" && cp * build
     - test $TRAVIS_BRANCH == "main" && mv build mycollection
-    - test $TRAVIS_BRANCH == "main" && tar -cxf mycollection.tgz mycollection
+    - test $TRAVIS_BRANCH == "main" && tar -czf mycollection.tgz mycollection
     - test $TRAVIS_BRANCH == "main" && export SSHPASS=$DEPLOY_PASS
     - test $TRAVIS_BRANCH == "main" && sshpass -e scp mycollection.tgz $DEPLOY_USER@DEPLOY_HOST:$DEPLOY_PATH
     - test $TRAVIS_BRANCH == "main" && sshpass -e ssh $DEPLOY_USER@$DEPLOY_HOST $DEPLOY_SCRIPT_PATH/deploy.sh
