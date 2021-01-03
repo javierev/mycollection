@@ -3,6 +3,15 @@ python:
     - '3.8'
 script:
     - python manage.py test
+env:
+    - SECRET_KEY=$TEST_SECRET_KEY
+    - DEBUG=True
+    - DATABASE_ENGINE=django.db.backends.sqlite3
+    - DATABASE_NAME=mycollection/db.sqlite3
+    - DATABASE_HOST=
+    - DATABASE_USER=
+    - DATABASE_PASSWORD=
+    - ALLOWED_HOSTS=
 addons:
     apt:
         packages:
