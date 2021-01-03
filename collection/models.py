@@ -7,6 +7,9 @@ class Console(models.Model):
     short_name = models.CharField(max_length=10)
     year = models.IntegerField(default=1999)
 
+    def __str__(self):
+        return self.name + ' (' + self.short_name + ')'
+
 class Game(models.Model):
     console = models.ForeignKey(Console, on_delete=models.DO_NOTHING)
     title = models.CharField(max_length=100)

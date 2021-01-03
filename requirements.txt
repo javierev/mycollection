@@ -1,2 +1,5 @@
-Django
+django
 mysqlclient
+djangorestframework
+markdown
+django-filter
