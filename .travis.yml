@@ -2,7 +2,7 @@ language: python
 python:
     - '3.8'
 script:
-    - python manage.py test --settings=mycollection.settings.testing
+    - python manage.py test
 addons:
     apt:
         packages:
