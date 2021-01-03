@@ -3,3 +3,4 @@ mysqlclient
 djangorestframework
 markdown
 django-filter
+python-decouple

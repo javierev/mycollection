@@ -4,4 +4,5 @@ collection/__pycache__/*
 collection/migrations/__pycache__/*
 mycollection/__pycache__/*
 mycollection/settings/__pycache__/*
+mycollection/.env
 
