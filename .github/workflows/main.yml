@@ -46,7 +46,6 @@ jobs:
           echo DATABASE_USER= >> .env
           echo DATABASE_PASSWORD= >> .env
           echo ALLOWED_HOSTS= >> .env
-          cat .env
         env:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
       - name: Run tests
