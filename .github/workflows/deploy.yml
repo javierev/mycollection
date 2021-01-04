@@ -18,9 +18,7 @@ jobs:
       - name: Deploy
         shell: bash
         run: |
-          ls -la .github/scripts
-          pwd
-          ./github/scripts/deploy.sh
+          ./.github/scripts/deploy.sh
         env:
           DEPLOY_USER: ${{ secrets.DeployUser }}
           DEPLOY_PASS: ${{ secrets.DeployPass }}
