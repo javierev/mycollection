@@ -40,7 +40,6 @@ jobs:
       - name: Create env file
         run: |
           ./.github/scripts/decrypt.sh
-          cat ./mycollection/.env
         env:
           DECRYPT_KEY: ${{ secrets.DECRYPT_KEY }}
       - name: Run tests
