@@ -39,7 +39,7 @@ jobs:
       - name: Create env file
         run: |
           ls -a
-          ./.github/scripts/decrpyt.sh
+          ./.github/scripts/decrypt.sh
         env:
           DECRYPT_KEY: ${{ secrets.DECRYPT_KEY }}
       - name: Run tests
