@@ -37,16 +37,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Create env file
-        run: |
-          echo SECRET_KEY="$SECRET_KEY" >> .env
-          echo DEBUG=True >> .env
-          echo DATABASE_ENGINE=django.db.backends.sqlite3 >> .env
-          echo DATABASE_NAME=mycollection/db.sqlite3 >> .env
-          echo DATABASE_HOST= >> .env
-          echo DATABASE_USER= >> .env
-          echo DATABASE_PASSWORD= >> .env
-          echo ALLOWED_HOSTS= >> .env
+        run: ./decrpyt.sh
         env:
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          DECRYPT_KEY: ${{ secrets.DECRYPT_KEY }}
       - name: Run tests
         run: python manage.py test collection
