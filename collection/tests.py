@@ -21,7 +21,7 @@ class ConsolesDetailViewTests(TestCase):
         """
         url = reverse('collection:console-detail', args=(99,))
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 200)
 
     def test_get_console(self):
         """
