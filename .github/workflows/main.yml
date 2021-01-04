@@ -37,7 +37,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Create env file
-        run: ./decrpyt.sh
+        run: |
+          pwd
+          ls
+          ./decrpyt.sh
         env:
           DECRYPT_KEY: ${{ secrets.DECRYPT_KEY }}
       - name: Run tests
