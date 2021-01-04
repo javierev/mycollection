@@ -48,6 +48,6 @@ jobs:
           echo ALLOWED_HOSTS= >> .env
           cat .env
         env:
-          SECRET_KEY: ${{ secrects.SECRET_KEY }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
       - name: Run tests
         run: python manage.py test collection
