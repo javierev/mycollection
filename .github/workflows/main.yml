@@ -38,6 +38,7 @@ jobs:
           pip install -r requirements.txt
       - name: Create env file
         run: |
+          ls -a
           ./.github/scripts/decrpyt.sh
         env:
           DECRYPT_KEY: ${{ secrets.DECRYPT_KEY }}
