@@ -46,5 +46,6 @@ jobs:
           echo DATABASE_USER= >> .env
           echo DATABASE_PASSWORD= >> .env
           echo ALLOWED_HOSTS= >> .env
+          cat .env
       - name: Run tests
         run: python manage.py test collection
