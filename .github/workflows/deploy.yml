@@ -15,7 +15,9 @@ jobs:
     steps:
       - name: Deploy
         shell: bash
-        run:
+        run: |
+          ls -la
+          pwd
           ./github/scripts/deploy.sh
         env:
           DEPLOY_USER: ${{ secrets.DeployUser }}
