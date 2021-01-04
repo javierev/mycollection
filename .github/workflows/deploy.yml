@@ -18,7 +18,7 @@ jobs:
       - name: Deploy
         shell: bash
         run: |
-          ls -la
+          ls -la .github/scripts
           pwd
           ./github/scripts/deploy.sh
         env:
