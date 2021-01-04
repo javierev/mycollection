@@ -1,0 +1,26 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: [ 'Test' ]
+    branches: [ 'main' ]
+    types:
+      - completed
+      - requested
+
+jobs:
+  pipeline-component:
+    name: Test Step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        shell: bash
+        run:
+          ./github/scripts/deploy.sh
+        env:
+          DEPLOY_USER: ${{ secrets.DeployUser }}
+          DEPLOY_PASS: ${{ secrets.DeployPass }}
+          DEPLOY_HOST: ${{ secrets.DeployHost }}
+          DEPLOY_PATH: ${{ secrets.DeployPath }}
+          DEPLOY_SCRIPT_PATH: ${{ secrets.DeployScriptPath }}
+
