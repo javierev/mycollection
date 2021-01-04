@@ -6,13 +6,15 @@ on:
     branches: [ 'main' ]
     types:
       - completed
-      - requested
 
 jobs:
   pipeline-component:
     name: Test Step
     runs-on: ubuntu-latest
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Deploy
         shell: bash
         run: |
