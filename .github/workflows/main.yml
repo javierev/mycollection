@@ -38,8 +38,8 @@ jobs:
           pip install -r requirements.txt
       - name: Create env file
         run: |
-          ls -a
           ./.github/scripts/decrypt.sh
+          cat ./mycollection/.env
         env:
           DECRYPT_KEY: ${{ secrets.DECRYPT_KEY }}
       - name: Run tests
