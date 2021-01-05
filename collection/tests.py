@@ -70,6 +70,59 @@ class ConsolesDetailViewTests(APITestCase):
         console = create_console(name="PlayStation 5", short_name="PS5", year=2020, user=owner)
         url = reverse('collection:console-detail', args=(console.pk,))
         self.__set_credentials_with_token(username='freddie', password='the great pretender')
-        response = self.client.get(path=url)
+        response = self.client.get(path=url, args=(console.pk,))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, console.name)
+
+    def test_post_console(self):
+        """
+        Save a console saves the console.
+        """
+        owner = create_user(username='john', email='jdeacon@queen.com', password="You're so self satisfied I don't need you")
+        console = create_console(name="PlayStation 5", short_name="PS5", year=2020, user=owner)
+        self.__set_credentials_with_token(username='john', password="You're so self satisfied I don't need you")
+        url = reverse('collection:console-detail', args=(console.pk,))
+        response = self.client.post(path=url,
+                                    data={'name' : 'PlayStation 55', 'short_name':'PS55', 'year': 2055},
+                                    format='json')
+        saved_console = Console.objects.get(pk=console.pk)
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'PlayStation 55')
+        self.assertEqual(saved_console.name, 'PlayStation 55')
+        self.assertEqual(saved_console.short_name, 'PS55')
+        self.assertEqual(saved_console.year, 2055)
+
+
+    def test_post_console_without_permission(self):
+        """
+        Error 401 (forbidden) when a user tries to save another user's console.
+        """
+        owner = create_user(username='john', email='jdeacon@queen.com', password="You're so self satisfied I don't need you")
+        other = create_user(username='roger', email='rtaylor@queen.com', password="One golden glance of what should be")
+        console = create_console(name="PlayStation 5", short_name="PS5", year=2020, user=owner)
+        self.__set_credentials_with_token(username='roger', password="One golden glance of what should be")
+        url = reverse('collection:console-detail', args=(console.pk,))
+        response = self.client.post(path=url,
+                                    data={'id' : console.pk, 'name' : 'PlayStation 55', 'short_name':'PS55', 'year': 2055},
+                                    format='json')
+        saved_console = Console.objects.get(pk=console.pk)
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(saved_console.name, 'PlayStation 5')
+        self.assertEqual(saved_console.short_name, 'PS5')
+        self.assertEqual(saved_console.year, 2020)
+
+    def test_post_console_anonymous(self):
+        """
+        Error 403 (unauthorized) when an anonymous user tries to save a console.
+        """
+        owner = create_user(username='john', email='jdeacon@queen.com', password="You're so self satisfied I don't need you")
+        console = create_console(name="PlayStation 5", short_name="PS5", year=2020, user=owner)
+        url = reverse('collection:console-detail', args=(console.pk,))
+        response = self.client.post(path=url,
+                                    data={'id' : console.pk, 'name' : 'PlayStation 55', 'short_name':'PS55', 'year': 2055},
+                                    format='json')
+        saved_console = Console.objects.get(pk=console.pk)
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(saved_console.name, 'PlayStation 5')
+        self.assertEqual(saved_console.short_name, 'PS5')
+        self.assertEqual(saved_console.year, 2020)
