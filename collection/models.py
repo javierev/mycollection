@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -6,6 +7,7 @@ class Console(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=10)
     year = models.IntegerField(default=1999)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.name + ' (' + self.short_name + ')'

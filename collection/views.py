@@ -1,16 +1,15 @@
 from django.http import JsonResponse
-from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
+from rest_framework import generics
 from .models import Console
 from .serializers import ConsoleSerializer
+from .permissions import IsOwner
 # Create your views here.
 
-class ConsoleDetailView(APIView):
+class ConsoleDetailView(generics.RetrieveAPIView):
     """
     API endpoints to get, put and delete consoles.
     """
-
-    def get(self, request, pk, format=None):
-        console = get_object_or_404(Console, pk=pk)
-        serializer = ConsoleSerializer(console)
-        return JsonResponse(serializer.data)
+    permission_classes = [IsOwner]
+    queryset = Console.objects.all()
+    serializer_class = ConsoleSerializer
