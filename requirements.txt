@@ -4,4 +4,4 @@ djangorestframework
 markdown
 django-filter
 python-decouple
-djangorestframework_simplejwt
+djangorestframework_simplejwt==4.6.0
