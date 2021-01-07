@@ -1,31 +1,9 @@
 from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
-from django.contrib.auth.models import User
-from .models import Console
 from rest_framework.parsers import JSONParser
 import io
-
-# Create your tests here.
-def create_console(name, short_name, year, user=None):
-    """
-    Create a console
-    :param name: full name of the console
-    :param short_name: short name of the console
-    :param year: year of manufacture
-    :param user: owner of the console
-    :return: console
-    """
-    return Console.objects.create(short_name=short_name, name=name, year=year, owner=user)
-
-def create_user(username, email, password):
-    """
-    Create a user
-    :param username: username
-    :param email: email
-    :param password: password (clear)
-    :return: User
-    """
-    return User.objects.create_user(username=username, email=email, password=password)
+from collection.models import Console
+from collection.tests.util import create_user, create_console
 
 class ConsolesDetailViewTests(APITestCase):
 

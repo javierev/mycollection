@@ -43,4 +43,4 @@ jobs:
         env:
           DECRYPT_KEY: ${{ secrets.DECRYPT_KEY }}
       - name: Run tests
-        run: python manage.py test collection
+        run: python manage.py test collection/tests
