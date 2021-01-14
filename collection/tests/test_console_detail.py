@@ -2,8 +2,7 @@ from rest_framework.test import APITestCase, APIClient
 from django.urls import reverse
 from rest_framework.parsers import JSONParser
 import io
-from collection.models import Console
-from collection.tests.util import create_user, create_console
+from collection.tests.util import *
 
 class ConsolesDetailViewTests(APITestCase):
 
@@ -73,7 +72,7 @@ class ConsolesDetailViewTests(APITestCase):
 
     def test_post_console_without_permission(self):
         """
-        Error 401 (forbidden) when a user tries to save another user's console.
+        Error 403 (forbidden) when a user tries to save another user's console.
         """
         owner = create_user(username='john', email='jdeacon@queen.com', password="You're so self satisfied I don't need you")
         other = create_user(username='roger', email='rtaylor@queen.com', password="One golden glance of what should be")
@@ -91,16 +90,31 @@ class ConsolesDetailViewTests(APITestCase):
 
     def test_post_console_anonymous(self):
         """
-        Error 403 (unauthorized) when an anonymous user tries to save a console.
+        Error 401 (unauthorized) when an anonymous user tries to save a console.
         """
         owner = create_user(username='john', email='jdeacon@queen.com', password="You're so self satisfied I don't need you")
         console = create_console(name="PlayStation 5", short_name="PS5", year=2020, user=owner)
         url = reverse('collection:console-detail', args=(console.pk,))
         response = self.client.post(path=url,
-                                    data={'id' : console.pk, 'name' : 'PlayStation 55', 'short_name':'PS55', 'year': 2055},
+                                    data={'name' : 'PlayStation 55', 'short_name':'PS55', 'year': 2055},
                                     format='json')
         saved_console = Console.objects.get(pk=console.pk)
         self.assertEqual(response.status_code, 401)
         self.assertEqual(saved_console.name, 'PlayStation 5')
         self.assertEqual(saved_console.short_name, 'PS5')
         self.assertEqual(saved_console.year, 2020)
+
+    def test_post_console_with_non_existing_company(self):
+        """
+        Error 500 (server error) when a user tries to save a console with a non existing company.
+        """
+        owner = create_user(username='john', email='jdeacon@queen.com', password="You're so self satisfied I don't need you")
+        console = create_console(name="PlayStation 5", short_name="PS5", year=2020, user=owner)
+        url = reverse('collection:console-detail', args=(console.pk,))
+        response = self.client.post(path=url,
+                                    data={'company_id' : 99 },
+                                    format='json')
+        saved_console = Console.objects.get(pk=console.pk)
+        self.assertEqual(response.status_code, 500)
+        self.assertContains(response, "Company id %s does not exist" % 99)
+        self.assertIsNone(saved_console.company)
