@@ -1,8 +1,13 @@
+# IDE files
 .idea
+# Testing and local database
 mycollection/db.sqlite3
+# __pycache__
 collection/__pycache__/*
 collection/migrations/__pycache__/*
 mycollection/__pycache__/*
 mycollection/settings/__pycache__/*
+collection/tests/__pycache__/*
+# Environment variables
 mycollection/.env
 
