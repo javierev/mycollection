@@ -106,15 +106,21 @@ class ConsolesDetailViewTests(APITestCase):
 
     def test_post_console_with_non_existing_company(self):
         """
-        Error 500 (server error) when a user tries to save a console with a non existing company.
+        Error 400 (bad request) when a user tries to save a console with a non existing company.
         """
         owner = create_user(username='john', email='jdeacon@queen.com', password="You're so self satisfied I don't need you")
         console = create_console(name="PlayStation 5", short_name="PS5", year=2020, user=owner)
+        self.__set_credentials_with_token(username='john', password="You're so self satisfied I don't need you")
         url = reverse('collection:console-detail', args=(console.pk,))
         response = self.client.post(path=url,
-                                    data={'company_id' : 99 },
+                                    data={
+                                        'name' : 'PlayStation 5',
+                                        'short_name' : 'PS5',
+                                        'year' : 2020,
+                                        'company' : 99, #non existing company
+                                    },
                                     format='json')
         saved_console = Console.objects.get(pk=console.pk)
-        self.assertEqual(response.status_code, 500)
-        self.assertContains(response, "Company id %s does not exist" % 99)
+        self.assertEqual(response.status_code, 400)
         self.assertIsNone(saved_console.company)
+

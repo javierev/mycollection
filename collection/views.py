@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from .models import Console
-from .serializers import ConsoleSerializer, ConsoleUpdateSerializer
+from .serializers import ConsoleSerializer
 from .permissions import IsOwner
 # Create your views here.
 
@@ -23,7 +23,7 @@ class ConsoleDetailView(APIView):
     def post(self, request, pk, format=None):
         console = get_object_or_404(Console, pk=pk)
         self.check_object_permissions(self.request, console)
-        serializer = ConsoleUpdateSerializer(data=request.data)
+        serializer = ConsoleSerializer(data=request.data)
         if serializer.is_valid():
             serializer.update(console, serializer.data)
             return JsonResponse(serializer.data, status=status.HTTP_200_OK)
