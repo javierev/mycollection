@@ -117,10 +117,38 @@ class ConsolesDetailViewTests(APITestCase):
                                         'name' : 'PlayStation 5',
                                         'short_name' : 'PS5',
                                         'year' : 2020,
-                                        'company' : 99, #non existing company
+                                        'company' : {
+                                            'id' : 99, #non existing company
+                                            'name' : 'Unknown company',
+                                            'whatever' : 'whatever'
+                                        }
                                     },
                                     format='json')
         saved_console = Console.objects.get(pk=console.pk)
         self.assertEqual(response.status_code, 400)
         self.assertIsNone(saved_console.company)
+
+    def test_post_console_with_company(self):
+        """
+        Save a console with a company saves the console.
+        """
+        owner = create_user(username='john', email='jdeacon@queen.com', password="You're so self satisfied I don't need you")
+        console = create_console(name="PlayStation 5", short_name="PS5", year=2020, user=owner)
+        company = create_company(name="Sony", country=create_country(name="Japan", iso_code="jp"))
+        self.__set_credentials_with_token(username='john', password="You're so self satisfied I don't need you")
+        url = reverse('collection:console-detail', args=(console.id,))
+        response = self.client.post(path=url,
+                                    data={
+                                        'name' : 'PlayStation 5',
+                                        'short_name' : 'PS5',
+                                        'year' : 2020,
+                                        'company' : {
+                                            'id' : company.id, #non existing company
+                                            'name' : company.name
+                                        }
+                                    },
+                                    format='json')
+        saved_console = Console.objects.get(pk=console.id)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(saved_console.company, company)
 
