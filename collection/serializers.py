@@ -33,7 +33,6 @@ class ConsoleSerializer(serializers.ModelSerializer):
             company_data = validated_data.pop('company')
             company = Company.objects.get(pk=company_data['id'])
 
-        print('--------> instance %s' % instance)
         instance.company = company
         instance.name = validated_data.get('name', instance.name)
         instance.short_name = validated_data.get('short_name', instance.short_name)
